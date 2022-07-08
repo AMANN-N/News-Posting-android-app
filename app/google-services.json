@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "169668020701",
+    "firebase_url": "https://bitsapp-e99f9-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "bitsapp-e99f9",
+    "storage_bucket": "bitsapp-e99f9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:169668020701:android:adcec85d798bf95e0d0e34",
+        "android_client_info": {
+          "package_name": "com.example.bitsapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "169668020701-d182scch3ps2al4jc96b66l1plidu6g9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bitsapp",
+            "certificate_hash": "6ee7dc1875a0aea11daa3f951ee098d0a95bdabb"
+          }
+        },
+        {
+          "client_id": "169668020701-1u1avoro0sa2lo5umrqqkre3v6295u0j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByqo92Os_U37VcvQsKTGMIhPre8-YNEM8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "169668020701-1u1avoro0sa2lo5umrqqkre3v6295u0j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
