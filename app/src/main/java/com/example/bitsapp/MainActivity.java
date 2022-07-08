@@ -10,8 +10,11 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.format.DateUtils;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,7 +22,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.bitsapp.Utils.Posts;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -40,9 +48,11 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.TimeZone;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -70,6 +80,9 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
     Uri imageUri;
     ProgressDialog mLoadingBar;
     StorageReference postImageRef;
+    FirebaseRecyclerAdapter<Posts,MyViewHolder>adapter;
+    FirebaseRecyclerOptions<Posts>options;
+    RecyclerView recyclerView;
 
 
 
@@ -88,6 +101,8 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
         sendImagePost=findViewById(R.id.send_post_imageView);
         inputPostDesc=findViewById(R.id.inputAddPost);
         mLoadingBar = new ProgressDialog(this);
+        recyclerView = findViewById(R.id.recyclerview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
@@ -119,7 +134,54 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
             }
         });
 
+        LoadPost();
+
     }
+
+    private void LoadPost() {
+        options=new FirebaseRecyclerOptions.Builder<Posts>().setQuery(PostRef , Posts.class).build();
+        adapter=new FirebaseRecyclerAdapter<Posts, MyViewHolder>(options) {
+            @Override
+            protected void onBindViewHolder(@NonNull MyViewHolder holder, int position, @NonNull Posts model) {
+
+                holder.postDesc.setText(model.getPostDesc());
+                String timeAgo = calculateTimeAgo(model.getDatePost());
+                holder.timeAgo.setText(timeAgo);
+
+                holder.username.setText(model.getUsername());
+                Picasso.get().load(model.getPostImageUrl()).into(holder.postImage);
+                Picasso.get().load(model.getUserProfileImageUrl()).into(holder.profileImage);
+
+            }
+
+            @NonNull
+            @Override
+            public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.single_view_post,parent,false);
+                return new MyViewHolder(view);
+            }
+        };
+
+        adapter.startListening();
+        recyclerView.setAdapter(adapter);
+    }
+
+    private String calculateTimeAgo(String datePost) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+
+        try {
+            long time = sdf.parse(datePost).getTime();
+            long now = System.currentTimeMillis();
+            CharSequence ago =
+                    DateUtils.getRelativeTimeSpanString(time, now, DateUtils.MINUTE_IN_MILLIS);
+
+            return ago+"";
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
