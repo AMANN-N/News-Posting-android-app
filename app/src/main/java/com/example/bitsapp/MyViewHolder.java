@@ -106,7 +106,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
                 }
                 else
                 {
-                    likeImage.setColorFilter(Color.BLACK);
+                    dislikeImage.setColorFilter(Color.BLACK);
                 }
 
             }
