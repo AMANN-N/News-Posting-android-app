@@ -154,6 +154,7 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
                 holder.username.setText(model.getUsername());
                 Picasso.get().load(model.getPostImageUrl()).into(holder.postImage);
                 Picasso.get().load(model.getUserProfileImageUrl()).into(holder.profileImage);
+                holder.countLikes(postKey, mUser.getUid(), LikeRef);
                 holder.likeImage.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View view){
@@ -182,7 +183,7 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
                         });
                     }
                 });
-
+                holder.countDislikes(postKey, mUser.getUid(), DislikeRef);
                 holder.dislikeImage.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View view){
@@ -211,7 +212,6 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
                         });
                     }
                 });
-
 
 
 
