@@ -1,11 +1,17 @@
 package com.example.bitsapp;
 
+import android.graphics.Color;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -26,5 +32,90 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
         likeCounter=itemView.findViewById(R.id.likeCounter);
         dislikeCounter=itemView.findViewById(R.id.dislikeCounter);
         commentsCounter=itemView.findViewById(R.id.commentsCounter);
+    }
+
+    public void countLikes(String postKey, String uid, DatabaseReference LikeRef) {
+
+        LikeRef.child(postKey).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists())
+                {
+                    int totalLikes = (int )snapshot.getChildrenCount();
+                    likeCounter.setText(totalLikes+"");
+                }
+                else
+                {
+                    likeCounter.setText("0");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        LikeRef.child(postKey).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.child(uid).exists())
+                {
+                    likeImage.setColorFilter(Color.GREEN);
+                }
+                else
+                {
+                    likeImage.setColorFilter(Color.GRAY);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void countDislikes(String postKey, String uid, DatabaseReference DislikeRef) {
+        DislikeRef.child(postKey).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists())
+                {
+                    int totalDislikes = (int )snapshot.getChildrenCount();
+                    likeCounter.setText(totalDislikes+"");
+                }
+                else
+                {
+                    likeCounter.setText("0");
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        DislikeRef.child(postKey).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.child(uid).exists())
+                {
+                    dislikeImage.setColorFilter(Color.RED);
+                }
+                else
+                {
+                    likeImage.setColorFilter(Color.GRAY);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 }
