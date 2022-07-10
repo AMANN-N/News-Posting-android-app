@@ -8,6 +8,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.DateUtils;
@@ -70,7 +71,7 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
 
     FirebaseAuth mAuth;
     FirebaseUser mUser;
-    DatabaseReference mUserRef,PostRef;
+    DatabaseReference mUserRef,PostRef,LikeRef;
     String profileImageUrlV , usernameV;
     CircleImageView profileimageheader;
     TextView usernameHeader;
@@ -108,6 +109,7 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
         mUser = mAuth.getCurrentUser();
         mUserRef = FirebaseDatabase.getInstance().getReference().child("Users");
         PostRef = FirebaseDatabase.getInstance().getReference().child("Posts");
+        LikeRef= FirebaseDatabase.getInstance().getReference().child("Likes");
         postImageRef= FirebaseStorage.getInstance().getReference().child("PostImages");
 
         drawerLayout = findViewById(R.id.drawerLayout);
@@ -143,7 +145,7 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
         adapter=new FirebaseRecyclerAdapter<Posts, MyViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull MyViewHolder holder, int position, @NonNull Posts model) {
-
+                String postKey = getRef(position).getKey();
                 holder.postDesc.setText(model.getPostDesc());
                 String timeAgo = calculateTimeAgo(model.getDatePost());
                 holder.timeAgo.setText(timeAgo);
@@ -151,7 +153,34 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
                 holder.username.setText(model.getUsername());
                 Picasso.get().load(model.getPostImageUrl()).into(holder.postImage);
                 Picasso.get().load(model.getUserProfileImageUrl()).into(holder.profileImage);
+                holder.likeImage.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View view){
+                        LikeRef.child(postKey).child(mUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener(){
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot){
+                                if (snapshot.exists())
+                                {
+                                    LikeRef.child(postKey).child(mUser.getUid()).removeValue();
+                                    holder.likeImage.setColorFilter(Color.GRAY);
+                                    notifyDataSetChanged();
+                                }
+                                else
+                                {
+                                    LikeRef.child(postKey).child(mUser.getUid()).setValue("Like");
+                                    holder.likeImage.setColorFilter(Color.GREEN);
+                                    notifyDataSetChanged();
 
+                                }
+                            }
+                            @Override
+                            public void onCancelled (@NonNull DatabaseError error) {
+                                Toast.makeText(MainActivity.this,""+error.getMessage(),Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(context: MainActivity.this, text: ""+error.getMessage(),Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
             }
 
             @NonNull
