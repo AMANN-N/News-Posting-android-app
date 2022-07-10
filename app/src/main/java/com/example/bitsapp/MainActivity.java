@@ -164,7 +164,7 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
                                 if (snapshot.exists())
                                 {
                                     LikeRef.child(postKey).child(mUser.getUid()).removeValue();
-                                    holder.likeImage.setColorFilter(Color.GRAY);
+                                    holder.likeImage.setColorFilter(Color.BLACK);
                                     notifyDataSetChanged();
                                 }
                                 else
@@ -193,7 +193,7 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
                                 if (snapshot.exists())
                                 {
                                     DislikeRef.child(postKey).child(mUser.getUid()).removeValue();
-                                    holder.dislikeImage.setColorFilter(Color.GRAY);
+                                    holder.dislikeImage.setColorFilter(Color.BLACK);
                                     notifyDataSetChanged();
                                 }
                                 else

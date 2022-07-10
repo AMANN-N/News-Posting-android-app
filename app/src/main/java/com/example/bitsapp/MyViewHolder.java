@@ -64,7 +64,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
                 }
                 else
                 {
-                    likeImage.setColorFilter(Color.GRAY);
+                    likeImage.setColorFilter(Color.BLACK);
                 }
             }
 
@@ -82,11 +82,11 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
                 if (snapshot.exists())
                 {
                     int totalDislikes = (int )snapshot.getChildrenCount();
-                    likeCounter.setText(totalDislikes+"");
+                    dislikeCounter.setText(totalDislikes+"");
                 }
                 else
                 {
-                    likeCounter.setText("0");
+                    dislikeCounter.setText("0");
                 }
 
             }
@@ -106,7 +106,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
                 }
                 else
                 {
-                    likeImage.setColorFilter(Color.GRAY);
+                    likeImage.setColorFilter(Color.BLACK);
                 }
 
             }
