@@ -71,7 +71,7 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
 
     FirebaseAuth mAuth;
     FirebaseUser mUser;
-    DatabaseReference mUserRef,PostRef,LikeRef;
+    DatabaseReference mUserRef,PostRef,LikeRef,DislikeRef;
     String profileImageUrlV , usernameV;
     CircleImageView profileimageheader;
     TextView usernameHeader;
@@ -110,6 +110,7 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
         mUserRef = FirebaseDatabase.getInstance().getReference().child("Users");
         PostRef = FirebaseDatabase.getInstance().getReference().child("Posts");
         LikeRef= FirebaseDatabase.getInstance().getReference().child("Likes");
+        DislikeRef= FirebaseDatabase.getInstance().getReference().child("Dislikes");
         postImageRef= FirebaseStorage.getInstance().getReference().child("PostImages");
 
         drawerLayout = findViewById(R.id.drawerLayout);
@@ -181,6 +182,43 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
                         });
                     }
                 });
+
+                holder.dislikeImage.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View view){
+                        DislikeRef.child(postKey).child(mUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener(){
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot){
+                                if (snapshot.exists())
+                                {
+                                    DislikeRef.child(postKey).child(mUser.getUid()).removeValue();
+                                    holder.dislikeImage.setColorFilter(Color.GRAY);
+                                    notifyDataSetChanged();
+                                }
+                                else
+                                {
+                                    DislikeRef.child(postKey).child(mUser.getUid()).setValue("Dislike");
+                                    holder.dislikeImage.setColorFilter(Color.RED);
+                                    notifyDataSetChanged();
+
+                                }
+                            }
+                            @Override
+                            public void onCancelled (@NonNull DatabaseError error) {
+                                Toast.makeText(MainActivity.this,""+error.getMessage(),Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(context: MainActivity.this, text: ""+error.getMessage(),Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+
+
+
+
+
+
+
+
             }
 
             @NonNull
