@@ -26,6 +26,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.bitsapp.Utils.Comment;
 import com.example.bitsapp.Utils.Posts;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -71,7 +72,7 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
 
     FirebaseAuth mAuth;
     FirebaseUser mUser;
-    DatabaseReference mUserRef,PostRef,LikeRef,DislikeRef;
+    DatabaseReference mUserRef,PostRef,LikeRef,DislikeRef , CommentRef;
     String profileImageUrlV , usernameV;
     CircleImageView profileimageheader;
     TextView usernameHeader;
@@ -84,6 +85,8 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
     FirebaseRecyclerAdapter<Posts,MyViewHolder>adapter;
     FirebaseRecyclerOptions<Posts>options;
     RecyclerView recyclerView;
+    FirebaseRecyclerOptions<Comment>CommentOption;
+    FirebaseRecyclerAdapter<Comment , CommentVIewHolder>CommentAdapter;
 
 
 
@@ -111,6 +114,7 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
         PostRef = FirebaseDatabase.getInstance().getReference().child("Posts");
         LikeRef= FirebaseDatabase.getInstance().getReference().child("Likes");
         DislikeRef= FirebaseDatabase.getInstance().getReference().child("Dislikes");
+        CommentRef = FirebaseDatabase.getInstance().getReference().child("Comments");
         postImageRef= FirebaseStorage.getInstance().getReference().child("PostImages");
 
         drawerLayout = findViewById(R.id.drawerLayout);
@@ -155,6 +159,7 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
                 Picasso.get().load(model.getPostImageUrl()).into(holder.postImage);
                 Picasso.get().load(model.getUserProfileImageUrl()).into(holder.profileImage);
                 holder.countLikes(postKey, mUser.getUid(), LikeRef);
+                holder.countComments(postKey, mUser.getUid(), CommentRef);
                 holder.likeImage.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View view){
@@ -213,6 +218,22 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
                     }
                 });
 
+                holder.commentSend.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String comment = holder.inputComments.getText().toString();
+                        if(comment.isEmpty())
+                        {
+                            Toast.makeText(MainActivity.this , "Please write something " , Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            AddComment(holder , postKey , CommentRef , mUser.getUid() , comment);
+                        }
+                    }
+                });
+
+                LoadComment(postKey);
 
 
 
@@ -231,6 +252,55 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
 
         adapter.startListening();
         recyclerView.setAdapter(adapter);
+    }
+
+    private void LoadComment(String postKey) {
+        MyViewHolder.recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+
+        CommentOption=new FirebaseRecyclerOptions.Builder<Comment>().setQuery(CommentRef.child(postKey),Comment.class).build();
+        CommentAdapter=new FirebaseRecyclerAdapter<Comment, CommentVIewHolder>(CommentOption) {
+            @Override
+            protected void onBindViewHolder(@NonNull CommentVIewHolder holder, int position, @NonNull Comment model) {
+                Picasso.get().load(model.getProfileImageUrl()).into(holder.profileImage);
+                holder.username.setText(model.getUsername());
+                holder.comment.setText(model.getComment());
+
+            }
+
+            @NonNull
+            @Override
+            public CommentVIewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_view_comment,parent,false);
+                return new CommentVIewHolder(view);
+            }
+        };
+
+        CommentAdapter.startListening();
+        MyViewHolder.recyclerView.setAdapter(CommentAdapter);
+    }
+
+    private void AddComment(MyViewHolder holder, String postKey, DatabaseReference commentRef, String uid, String comment)
+    {
+        HashMap hashMap= new HashMap();
+        hashMap.put("username" , usernameV);
+        hashMap.put("profileImageUrl" , profileImageUrlV);
+        hashMap.put("comment" , comment);
+
+        commentRef.child(postKey).child(uid).updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if(task.isSuccessful())
+                {
+                    Toast.makeText(MainActivity.this , "Comment added" , Toast.LENGTH_SHORT).show();
+                    adapter.notifyDataSetChanged();
+                    holder.inputComments.setText(null);
+                }
+                else
+                {
+                    Toast.makeText(MainActivity.this , ""+task.getException().toString() , Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private String calculateTimeAgo(String datePost) {

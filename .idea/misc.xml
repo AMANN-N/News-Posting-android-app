@@ -7,6 +7,7 @@
         <entry key="..\:/Users/AMAN RAJ SINGH/AndroidStudioProjects/Bitsapp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.18" />
         <entry key="..\:/Users/AMAN RAJ SINGH/AndroidStudioProjects/Bitsapp/app/src/main/res/drawable/ic_message.xml" value="0.2105" />
         <entry key="..\:/Users/AMAN RAJ SINGH/AndroidStudioProjects/Bitsapp/app/src/main/res/drawable/input_add_post_bg.xml" value="0.1935" />
+        <entry key="..\:/Users/AMAN RAJ SINGH/AndroidStudioProjects/Bitsapp/app/src/main/res/drawable/input_comment_bg.xml" value="0.1635" />
         <entry key="..\:/Users/AMAN RAJ SINGH/AndroidStudioProjects/Bitsapp/app/src/main/res/layout/activity_login.xml" value="0.2" />
         <entry key="..\:/Users/AMAN RAJ SINGH/AndroidStudioProjects/Bitsapp/app/src/main/res/layout/activity_main.xml" value="0.10400000000000001" />
         <entry key="..\:/Users/AMAN RAJ SINGH/AndroidStudioProjects/Bitsapp/app/src/main/res/layout/activity_register.xml" value="0.2" />
@@ -16,7 +17,8 @@
         <entry key="..\:/Users/AMAN RAJ SINGH/AndroidStudioProjects/Bitsapp/app/src/main/res/layout/activity_userlist.xml" value="0.10989583333333333" />
         <entry key="..\:/Users/AMAN RAJ SINGH/AndroidStudioProjects/Bitsapp/app/src/main/res/layout/drawer_header.xml" value="0.4" />
         <entry key="..\:/Users/AMAN RAJ SINGH/AndroidStudioProjects/Bitsapp/app/src/main/res/layout/main_appbar.xml" value="0.1" />
-        <entry key="..\:/Users/AMAN RAJ SINGH/AndroidStudioProjects/Bitsapp/app/src/main/res/layout/single_view_post.xml" value="0.536" />
+        <entry key="..\:/Users/AMAN RAJ SINGH/AndroidStudioProjects/Bitsapp/app/src/main/res/layout/single_view_comment.xml" value="0.2" />
+        <entry key="..\:/Users/AMAN RAJ SINGH/AndroidStudioProjects/Bitsapp/app/src/main/res/layout/single_view_post.xml" value="0.176" />
         <entry key="..\:/Users/AMAN RAJ SINGH/AndroidStudioProjects/Bitsapp/app/src/main/res/menu/drawer_menu.xml" value="0.5849609375" />
         <entry key="..\:/Users/sanka/AndroidStudioProjects/News-Posting-android-app-main/app/src/main/res/layout/activity_login.xml" value="0.1" />
       </map>

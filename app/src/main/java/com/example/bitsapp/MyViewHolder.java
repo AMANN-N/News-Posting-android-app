@@ -2,6 +2,7 @@ package com.example.bitsapp;
 
 import android.graphics.Color;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,8 +18,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MyViewHolder extends RecyclerView.ViewHolder {
     CircleImageView profileImage;
-    ImageView postImage, likeImage , dislikeImage , commentsImage;
+    ImageView postImage, likeImage , dislikeImage , commentsImage , commentSend;
     TextView username, timeAgo, postDesc , likeCounter , dislikeCounter , commentsCounter;
+    EditText inputComments;
+    public static RecyclerView recyclerView;
+
     public MyViewHolder (@NonNull View itemView) {
         super(itemView);
         profileImage=itemView.findViewById(R.id.profileImagePost);
@@ -32,6 +36,9 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
         likeCounter=itemView.findViewById(R.id.likeCounter);
         dislikeCounter=itemView.findViewById(R.id.dislikeCounter);
         commentsCounter=itemView.findViewById(R.id.commentsCounter);
+        commentSend = itemView.findViewById(R.id.sendComment);
+        inputComments=itemView.findViewById(R.id.inputComments);
+        recyclerView=itemView.findViewById(R.id.recyclerViewComments);
     }
 
     public void countLikes(String postKey, String uid, DatabaseReference LikeRef) {
@@ -109,6 +116,29 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
                     dislikeImage.setColorFilter(Color.BLACK);
                 }
 
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+    public void countComments(String postKey, String uid, DatabaseReference commentRef) {
+        commentRef.child(postKey).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists())
+                {
+                    int totalComment = (int )snapshot.getChildrenCount();
+                    commentsCounter.setText(totalComment+"");
+                }
+                else
+                {
+                    commentsCounter.setText("0");
+                }
             }
 
             @Override
