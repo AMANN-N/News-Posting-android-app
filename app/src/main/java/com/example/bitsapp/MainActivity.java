@@ -60,6 +60,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class  MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
+
+
     //Button btnLogout;
     //FirebaseAuth mAuth;
 
@@ -146,6 +148,15 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
     }
 
     private void LoadPost() {
+
+
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        
         options=new FirebaseRecyclerOptions.Builder<Posts>().setQuery(PostRef , Posts.class).build();
         adapter=new FirebaseRecyclerAdapter<Posts, MyViewHolder>(options) {
             @Override
@@ -475,13 +486,13 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
                 Toast.makeText(this, "Profile", Toast.LENGTH_SHORT).show();
                 break;
 
-            case R.id.friend:
-                Toast.makeText(this, "Friends", Toast.LENGTH_SHORT).show();
-                break;
+            //case R.id.friend:
+            //    Toast.makeText(this, "Friends", Toast.LENGTH_SHORT).show();
+            //    break;
 
-            case R.id.chat:
-                Toast.makeText(this, "Send Message", Toast.LENGTH_SHORT).show();
-                break;
+            //case R.id.chat:
+            //    Toast.makeText(this, "Send Message", Toast.LENGTH_SHORT).show();
+            //    break;
 
             case R.id.logout:
                 Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
