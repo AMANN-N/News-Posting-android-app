@@ -292,7 +292,7 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
                 if(task.isSuccessful())
                 {
                     Toast.makeText(MainActivity.this , "Comment added" , Toast.LENGTH_SHORT).show();
-                    adapter.notifyDataSetChanged();
+                    //adapter.notifyDataSetChanged();
                     holder.inputComments.setText(null);
                 }
                 else
@@ -344,7 +344,7 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
             mLoadingBar.show();
 
             Date date = new Date();
-            SimpleDateFormat formatter = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-M-yyyy HH:mm:ss");
             String strDate = formatter.format(date);
 
             postImageRef.child(mUser.getUid()+strDate).putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
