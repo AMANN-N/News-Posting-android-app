@@ -99,7 +99,7 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
 
         toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("News App");
+        getSupportActionBar().setTitle("BITS-DAILY");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
 
@@ -156,7 +156,7 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        
+
         options=new FirebaseRecyclerOptions.Builder<Posts>().setQuery(PostRef , Posts.class).build();
         adapter=new FirebaseRecyclerAdapter<Posts, MyViewHolder>(options) {
             @Override
@@ -245,6 +245,15 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
                 });
 
                 LoadComment(postKey);
+
+                holder.postImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(MainActivity.this , ImageViewActivity.class);
+                        intent.putExtra("url" , model.getPostImageUrl());
+                        startActivity(intent);
+                    }
+                });
 
 
 
@@ -495,7 +504,10 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
             //    break;
 
             case R.id.logout:
-                Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
+                mAuth.signOut();
+                Intent intent=new Intent(MainActivity.this , LoginActivity.class);
+                startActivity(intent);
+                finish();
                 break;
         }
         return true;
