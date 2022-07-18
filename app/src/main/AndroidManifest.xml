@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".ImageViewActivity"
             android:exported="false" />
         <activity
@@ -23,10 +26,10 @@
         </activity>
         <activity
             android:name=".SetupActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".LoginActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MainActivity" />
     </application>

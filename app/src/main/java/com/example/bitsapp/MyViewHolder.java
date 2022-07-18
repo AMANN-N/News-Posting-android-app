@@ -17,6 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MyViewHolder extends RecyclerView.ViewHolder {
+    int totalDislikes , totalLikes;
     CircleImageView profileImage;
     ImageView postImage, likeImage , dislikeImage , commentsImage , commentSend;
     TextView username, timeAgo, postDesc , likeCounter , dislikeCounter , commentsCounter;
@@ -48,7 +49,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists())
                 {
-                    int totalLikes = (int )snapshot.getChildrenCount();
+                    totalLikes = (int )snapshot.getChildrenCount();
                     likeCounter.setText(totalLikes+"");
                 }
                 else
@@ -88,7 +89,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists())
                 {
-                    int totalDislikes = (int )snapshot.getChildrenCount();
+                    totalDislikes = (int )snapshot.getChildrenCount();
                     dislikeCounter.setText(totalDislikes+"");
                 }
                 else

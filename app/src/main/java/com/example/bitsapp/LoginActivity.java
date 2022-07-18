@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.identity.BeginSignInRequest;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -63,9 +64,12 @@ public class LoginActivity<getResult, val> extends AppCompatActivity {
             }
         });
 
+        mAuth=FirebaseAuth.getInstance();
+        mLoadingBar = new ProgressBar(LoginActivity.this);
 
         gso=new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
+                //.requestIdToken(getString("169668020701-1u1avoro0sa2lo5umrqqkre3v6295u0j.apps.googleusercontent.com"))
                 .requestEmail()
                 .build();
 
@@ -80,14 +84,6 @@ public class LoginActivity<getResult, val> extends AppCompatActivity {
         });
 
 
-        mAuth=FirebaseAuth.getInstance();
-        mLoadingBar = new ProgressBar(LoginActivity.this);
-
-
-
-
-
-
 
 
         btn.setOnClickListener(new View.OnClickListener() {
@@ -99,10 +95,8 @@ public class LoginActivity<getResult, val> extends AppCompatActivity {
 
 
 
-
-
-
     }
+
 
     private void checkCredentials() {
 
@@ -146,9 +140,18 @@ public class LoginActivity<getResult, val> extends AppCompatActivity {
         input.setError(s);
         input.requestFocus();
     }
+/*
+    @Override
+    protected void onStart() {
+        super.onStart();
 
-
-
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            // User is signed in
+            updateUI();
+        }
+    }
+*/
     private void SignIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent , RC_SIGN_IN);
@@ -160,6 +163,65 @@ public class LoginActivity<getResult, val> extends AppCompatActivity {
 
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+
+
+
+
+            if(task.isSuccessful()) {
+
+                Toast.makeText(getApplicationContext(), "Google sign in successful", Toast.LENGTH_SHORT).show();
+                try {
+                    // Initialize sign in account
+                    GoogleSignInAccount googleSignInAccount=task
+                            .getResult(ApiException.class);
+                    // Check condition
+                    if(googleSignInAccount!=null)
+                    {
+                        // When sign in account is not equal to null
+                        // Initialize auth credential
+                        AuthCredential authCredential= GoogleAuthProvider
+                                .getCredential(googleSignInAccount.getIdToken()
+                                        ,null);
+                        // Check credential
+                        mAuth.signInWithCredential(authCredential)
+                                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        // Check condition
+                                        if(task.isSuccessful())
+                                        {
+                                            // When task is successful
+                                            updateUI(null);
+                                            // Display Toast
+                                            Toast.makeText(getApplicationContext(), "Firebase authentication successful", Toast.LENGTH_SHORT).show();
+                                        }
+                                        else
+                                        {
+                                            // When task is unsuccessful
+                                            try {
+                                                Toast.makeText(getApplicationContext(), "Authentication Failed :"+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                            catch (Exception e){
+                                                e.getStackTrace();
+                                            }
+                                        }
+                                    }
+                                });
+
+                    }
+                } catch (ApiException e) {
+                    Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "Authentication Failed :"+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+
+/*
+
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
@@ -168,7 +230,7 @@ public class LoginActivity<getResult, val> extends AppCompatActivity {
             }
 
         }
-    }
+
 
 
 
@@ -195,9 +257,10 @@ public class LoginActivity<getResult, val> extends AppCompatActivity {
                     }
                 });
     }
-
+*/
     private void updateUI(FirebaseUser user) {
 
+        finish();
         Intent intent = new Intent(LoginActivity.this , MainActivity.class);
         startActivity(intent);
     }

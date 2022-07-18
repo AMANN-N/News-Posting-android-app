@@ -61,12 +61,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class  MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
 
-
-    //Button btnLogout;
-    //FirebaseAuth mAuth;
-
-    //GoogleSignInOptions gso;
-    //GoogleSignInClient gsc;
     private static final int REQUEST_CODE = 101;
     Toolbar toolbar;
     DrawerLayout drawerLayout;
@@ -274,31 +268,6 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
         recyclerView.setAdapter(adapter);
     }
 
-    private void LoadComment(String postKey) {
-        MyViewHolder.recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-
-        CommentOption=new FirebaseRecyclerOptions.Builder<Comment>().setQuery(CommentRef.child(postKey),Comment.class).build();
-        CommentAdapter=new FirebaseRecyclerAdapter<Comment, CommentVIewHolder>(CommentOption) {
-            @Override
-            protected void onBindViewHolder(@NonNull CommentVIewHolder holder, int position, @NonNull Comment model) {
-                Picasso.get().load(model.getProfileImageUrl()).into(holder.profileImage);
-                holder.username.setText(model.getUsername());
-                holder.comment.setText(model.getComment());
-
-            }
-
-            @NonNull
-            @Override
-            public CommentVIewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_view_comment,parent,false);
-                return new CommentVIewHolder(view);
-            }
-        };
-
-        CommentAdapter.startListening();
-        MyViewHolder.recyclerView.setAdapter(CommentAdapter);
-    }
-
     private void AddComment(MyViewHolder holder, String postKey, DatabaseReference commentRef, String uid, String comment)
     {
         HashMap hashMap= new HashMap();
@@ -322,6 +291,35 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
             }
         });
     }
+
+    private void LoadComment(String postKey) {
+
+
+        MyViewHolder.recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+
+        CommentOption=new FirebaseRecyclerOptions.Builder<Comment>().setQuery(CommentRef.child(postKey),Comment.class).build();
+        CommentAdapter=new FirebaseRecyclerAdapter<Comment, CommentVIewHolder>(CommentOption) {
+            @Override
+            protected void onBindViewHolder(@NonNull CommentVIewHolder holder, int position, @NonNull Comment model) {
+                Picasso.get().load(model.getProfileImageUrl()).into(holder.profileImage);
+                holder.username.setText(model.getUsername());
+                holder.comment.setText(model.getComment());
+
+            }
+
+            @NonNull
+            @Override
+            public CommentVIewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_view_comment,parent,false); //*******
+                return new CommentVIewHolder(view);
+            }
+        };
+
+        CommentAdapter.startListening();
+        MyViewHolder.recyclerView.setAdapter(CommentAdapter);
+    }
+
+
 
     private String calculateTimeAgo(String datePost) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
@@ -418,31 +416,6 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
         }
     }
 
-    //btnLogout=findViewById(R.id.btnLogout);
-        //mAuth=FirebaseAuth.getInstance();
-
-        //btnLogout.setOnClickListener(new View.OnClickListener() {
-        //    @Override
-         //   public void onClick(View v) {
-         //       mAuth.signOut();
-         //       Intent intent=new Intent(MainActivity.this , LoginActivity.class);
-         //       intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        //        startActivity(intent);
-         //   }
-       // });
-
-
-
-
-        //gso=new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
-        //        .requestEmail()
-        //        .build();
-
-        //gsc= GoogleSignIn.getClient(this,gso);
-        //GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        //if(account!=null){
-         //   Str
-        //}
 
 
     @Override
@@ -469,7 +442,7 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(MainActivity.this, "Sorry! , Something is wrong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Bye ", Toast.LENGTH_SHORT).show();
 
                 }
             });
@@ -492,7 +465,8 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
                 break;
 
             case R.id.profile:
-                Toast.makeText(this, "Profile", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+
                 break;
 
             //case R.id.friend:
