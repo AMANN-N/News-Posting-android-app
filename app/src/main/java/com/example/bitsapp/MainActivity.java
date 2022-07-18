@@ -442,7 +442,7 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(MainActivity.this, "Bye ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, " ", Toast.LENGTH_SHORT).show();
 
                 }
             });
