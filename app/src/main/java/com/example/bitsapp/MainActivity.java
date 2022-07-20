@@ -355,6 +355,10 @@ public class  MainActivity extends AppCompatActivity implements NavigationView.O
             inputPostDesc.setError("Please write more about the incident");
 
         }
+        else if(imageUri == null)
+        {
+            Toast.makeText(this , "Please select an image" , Toast.LENGTH_SHORT).show();
+        }
         else
         {
             mLoadingBar.setTitle("Adding Post");

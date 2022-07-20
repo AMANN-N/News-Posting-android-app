@@ -40,9 +40,9 @@ public class LoginActivity<getResult, val> extends AppCompatActivity {
     private FirebaseAuth mAuth;
     ProgressBar mLoadingBar;
 
-    private Button btnGoogle;
-    GoogleSignInOptions gso;
-    GoogleSignInClient mGoogleSignInClient;
+    //private Button btnGoogle;
+    //GoogleSignInOptions gso;
+    //GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +53,7 @@ public class LoginActivity<getResult, val> extends AppCompatActivity {
         inputEmail=findViewById(R.id.inputEmail);
         inputPassword=findViewById(R.id.inputPassword);
         btnLogin=findViewById(R.id.btnlogin);
-        btnGoogle=findViewById(R.id.btnGoogle);
+        //btnGoogle=findViewById(R.id.btnGoogle);
 
 
 
@@ -67,21 +67,21 @@ public class LoginActivity<getResult, val> extends AppCompatActivity {
         mAuth=FirebaseAuth.getInstance();
         mLoadingBar = new ProgressBar(LoginActivity.this);
 
-        gso=new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                //.requestIdToken(getString("169668020701-1u1avoro0sa2lo5umrqqkre3v6295u0j.apps.googleusercontent.com"))
-                .requestEmail()
-                .build();
+       // gso=new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
+                //.requestIdToken(getString(R.string.default_web_client_id))
+                ////.requestIdToken(getString("169668020701-1u1avoro0sa2lo5umrqqkre3v6295u0j.apps.googleusercontent.com"))
+               // .requestEmail()
+               // .build();
 
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+       // mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        btnGoogle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SignIn();
+       // btnGoogle.setOnClickListener(new View.OnClickListener() {
+           // @Override
+          //  public void onClick(View view) {
+        //        SignIn();
 
-            }
-        });
+         //   }
+      //  });
 
 
 
@@ -152,11 +152,12 @@ public class LoginActivity<getResult, val> extends AppCompatActivity {
         }
     }
 */
-    private void SignIn() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent , RC_SIGN_IN);
+   // private void SignIn() {
+   //     Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+   //     startActivityForResult(signInIntent , RC_SIGN_IN);
 
-    }
+   // }
+    /*
     @Override
     protected void onActivityResult(int requestCode , int resultCode , @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

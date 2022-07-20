@@ -136,25 +136,6 @@
         app:layout_constraintTop_toTopOf="@+id/btnGoogle" />
         -->
 
-    <Button
-        android:id="@+id/btnGoogle"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="128dp"
-        android:layout_marginTop="500dp"
-        android:background="@drawable/btn_bg"
-        android:drawableLeft="@drawable/ic_google"
-        android:drawablePadding="10dp"
-        android:paddingLeft="20dp"
-        android:text="Google"
-        android:textAlignment="textStart"
-        android:textAllCaps="false"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.775" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
